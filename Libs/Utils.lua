@@ -1,0 +1,1 @@
+--<====== Ensemble des fonctions utiles pour le jeu ======>--

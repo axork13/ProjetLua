@@ -3,8 +3,8 @@ local Enemy = {}
 
 function Enemy:new(pX, pY)
     local e = {}
-    e.x = 100 or pX
-    e.y = 100 or pY
+    e.x = pX or 100
+    e.y = pY or 100
     e.vx = 1
     e.spd = 50
 
@@ -43,7 +43,7 @@ function Enemy:new(pX, pY)
 end
 
 function Enemy:load()
-    self.spriteSheet.img = love.graphics.newImage("/Assets/Images/Hero_spriteSheet.png")
+    self.spriteSheet.img = love.graphics.newImage("/Assets/Images/hero/idle_hero.png")
 
     for c=1, self.spriteSheet.nCols do
         for l=1, self.spriteSheet.nLines do

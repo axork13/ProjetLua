@@ -22,11 +22,7 @@ function love.load()
     em = EntityManager:new()
     hero = Hero:new()    
     hero:load()
-    enemy = Enemy:new(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
-    enemy:load()
-
     em:addEntity(hero)
-    em:addEntity(enemy)
 end
 
 function love.update(dt)

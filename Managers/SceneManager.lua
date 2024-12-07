@@ -30,6 +30,10 @@ function SceneManager:load()
     self.currentScene = self.lstScene["Menu"]
 end
 
+function SceneManager:update(dt)
+    self.currentScene:update(dt)
+end
+
 function SceneManager:draw()
     self.currentScene:draw()
 end
@@ -45,7 +49,9 @@ function SceneManager:keypressed(key)
 end
 
 function SceneManager:switchScene(pSceneType)
+    self.currentScene:unload()
     self.currentScene = self.lstScene[pSceneType]
+    self.currentScene:load()
 end
 
 return SceneManager

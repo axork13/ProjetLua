@@ -15,6 +15,10 @@ function MenuScene:load()
 
 end
 
+function MenuScene:unload()
+
+end
+
 function MenuScene:update()
 
 end

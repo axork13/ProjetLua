@@ -1,9 +1,6 @@
 
 local SceneManager = require("/Managers/SceneManager")
 local LocaleManager = require("/Managers/LocaleManager")
-local EntityManager = require("/Managers/EntityManager")
-local Hero = require("/Objects/Hero")
-local Enemy = require("/Objects/Enemy")
 
 
 
@@ -19,23 +16,15 @@ function love.load()
     lm:load(lm.currentLanguage)
 
     sm = SceneManager:new()
-    sm:load()   
-
-    em = EntityManager:new()
-    hero = Hero:new(100,100)    
-    hero:load()
-    em:addEntity(hero)
-
-    print(hero.pos.x)
+    sm:load()
 end
 
 function love.update(dt)
-    em:update(dt)
+   sm:update(dt)
 end
 
 function love.draw()
     sm:draw()
-    em:draw()
 end
 
 function love.keypressed(key)

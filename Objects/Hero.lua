@@ -1,13 +1,13 @@
+local Vector2 = require("/Libs/Vector2")
+
 --<====== Classe permettant de créer un Sprite ======>--
 local Hero = {}
 
 function Hero:new(pX, pY)
     local h = {}
-    h.x = pX or 100
-    h.y = pY or 100
-    h.vx = 2
-    h.vy = 2
-    h.spd = 50
+    h.pos = Vector2:new(pX or 100, pY or 100)
+    h.velocity = Vector2:new()
+    h.spd = 200
     h.scale = 2
 
     h.img = {}
@@ -29,9 +29,11 @@ function Hero:new(pX, pY)
     h.state = "idle"
     h.width = 48
     h.height = 48
+    h.currentFrame = 1
 
     setmetatable(h, self)
     self.__index = self
+
     return h
 end
 
@@ -52,47 +54,49 @@ function Hero:load()
     self:loadImageState("walkdown", 7, "walk")
     self:loadImageState("walkright", 13, "walk")
     self:loadImageState("walkleft", 19, "walk")
-    self.currentFrame = 1
 end
 
 function Hero:update(dt)
     self:animate(dt)
+
+    local direction = Vector2:new()
+
     if love.keyboard.isDown("right") then
-        if self.state ~= "walkright" then
-            self.state = "walkright"
-            self.currentFrame = 1
-        end
-        self.x = self.x + self.vx * self.spd * dt
+        direction.x = 1
     elseif love.keyboard.isDown("left") then
-        if self.state ~= "walkleft" then
-            self.state = "walkleft"
-            self.currentFrame = 1
-        end
-        self.x = self.x - self.vx * self.spd * dt
-    elseif love.keyboard.isDown("up") then
-        if self.state ~= "walkup" then
-            self.state = "walkup"
-            self.currentFrame = 1
-        end
-        self.y = self.y - self.vy * self.spd * dt
+        direction.x = -1
+    end
+    
+    if love.keyboard.isDown("up") then
+        direction.y = -1
     elseif love.keyboard.isDown("down") then
-        if self.state ~= "walkdown" then
-            self.state = "walkdown"
-            self.currentFrame = 1
+        direction.y = 1
+    end
+    
+    if direction.x ~= 0 or direction.y ~= 0 then
+        direction:normalize()
+        self.velocity = direction * self.spd
+        if math.abs(direction.x) > math.abs(direction.y) then
+            self.state = direction.x > 0 and "walkright" or "walkleft"
+        else
+            self.state = direction.y > 0 and "walkdown" or "walkup"
         end
-        self.y = self.y + self.vy * self.spd * dt
-    elseif self.state ~= "idle" then
-        self.state = "idle"
-        self.currentFrame = 1
-    end  
+    else
+        self.velocity = Vector2:new()
+        self.state = "idle" 
+        self.currentFrame = 1       
+    end
+
+    self.pos = self.pos + self.velocity * dt
 end
 
 function Hero:draw()
     -- Drawing the hero
     local nFrame = math.floor(self.currentFrame)
+    print(nFrame)
     local heroQuad = self.lstSprites[self.state][nFrame]
 
-    love.graphics.draw(self.img[self.state], heroQuad, self.x - self.width / 2, self.y - self.height / 2, 0, self.scale, self.scale, self.width/self.scale, self.height/self.scale)
+    love.graphics.draw(self.img[self.state], heroQuad, self.pos.x - self.width / 2, self.pos.y - self.height / 2, 0, self.scale, self.scale, self.width/self.scale, self.height/self.scale)
 
 end
 

@@ -5,6 +5,8 @@ local EntityManager = require("/Managers/EntityManager")
 local Hero = require("/Objects/Hero")
 local Enemy = require("/Objects/Enemy")
 
+
+
 --< Empèche Love de filtrer les contours des images quand elles sont redimentionnées >--
 --< Indispensable pour du pixel art >--
 love.graphics.setDefaultFilter("nearest")
@@ -20,9 +22,11 @@ function love.load()
     sm:load()   
 
     em = EntityManager:new()
-    hero = Hero:new()    
+    hero = Hero:new(100,100)    
     hero:load()
     em:addEntity(hero)
+
+    print(hero.pos.x)
 end
 
 function love.update(dt)

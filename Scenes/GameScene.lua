@@ -36,4 +36,8 @@ function GameScene:draw()
     em:draw()
 end
 
+function GameScene:keypressed(key)
+    hero:keypressed(key)
+end
+
 return GameScene

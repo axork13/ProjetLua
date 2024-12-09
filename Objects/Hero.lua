@@ -9,6 +9,7 @@ function Hero:new(pX, pY)
     h.velocity = Vector2:new()
     h.spd = 200
     h.scale = 2
+    h.life = .5
 
     h.img = {}
     h.lstSprites = {}
@@ -54,11 +55,12 @@ function Hero:load()
     self:loadImageState("walkdown", 7, "walk")
     self:loadImageState("walkright", 13, "walk")
     self:loadImageState("walkleft", 19, "walk")
+    imgHalfLeft = love.graphics.newImage("/Assets/Images/hero/half_heart_left.png")
+    imgHalfRight = love.graphics.newImage("/Assets/Images/hero/half_heart_right.png")
 end
 
 function Hero:update(dt)
-    self:animate(dt)
-
+    
     local direction = Vector2:new()
 
     if love.keyboard.isDown("right") then
@@ -83,17 +85,19 @@ function Hero:update(dt)
         end
     else
         self.velocity = Vector2:new()
-        self.state = "idle" 
-        self.currentFrame = 1       
+        self.state = "idle"   
     end
 
     self.pos = self.pos + self.velocity * dt
+
+    self:animate(dt)
 end
 
 function Hero:draw()
+    self:drawLife()
+
     -- Drawing the hero
     local nFrame = math.floor(self.currentFrame)
-    print(nFrame)
     local heroQuad = self.lstSprites[self.state][nFrame]
 
     love.graphics.draw(self.img[self.state], heroQuad, self.pos.x - self.width / 2, self.pos.y - self.height / 2, 0, self.scale, self.scale, self.width/self.scale, self.height/self.scale)
@@ -105,6 +109,32 @@ function Hero:animate(dt)
     self.currentFrame = self.currentFrame + dt * self.nFrames[self.state]
     if self.currentFrame >= #self.lstSprites[self.state] + 1 then
         self.currentFrame = 1
+    end
+end
+
+function Hero:drawLife()
+    for i=0.5, self.life, 0.5 do
+        if i%1 == 0 then
+            love.graphics.draw(imgHalfRight, 18*(i-0.5), 10)
+        else
+            if self.life == 0.5 then 
+                if math.floor(love.timer.getTime()*3) % 2 == 0 then
+                    love.graphics.draw(imgHalfLeft, 18*i, 10)
+                end
+            else
+                love.graphics.draw(imgHalfLeft, 18*i, 10)
+            end
+        end
+    end  
+end
+
+function Hero:keypressed(key)
+    if key == "kp-" then
+        self.life = self.life - 0.5
+    end
+
+    if key == "kp+" then
+        self.life = self.life + 0.5
     end
 end
 

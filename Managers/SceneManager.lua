@@ -40,11 +40,15 @@ end
 
 function SceneManager:keypressed(key)
     if key == "g" then
-        self:switchScene("Game")
+        self:switchScene("Game")        
     end
 
     if key == "m" then
         self:switchScene("Menu")
+    end
+
+    if self.currentScene.type == "Game" then
+        self.currentScene:keypressed(key)
     end
 end
 

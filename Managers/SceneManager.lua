@@ -48,7 +48,9 @@ function SceneManager:keypressed(key)
     end
 
     if self.currentScene.type == "Game" then
-        self.currentScene:keypressed(key)
+        if love.keyboard.isScancodeDown('p') then
+            self:switchScene("Pause")
+        end
     end
 end
 

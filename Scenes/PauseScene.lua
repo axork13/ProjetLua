@@ -20,6 +20,7 @@ function PauseScene:update()
 end
 
 function PauseScene:draw()
+    love.graphics.print("-- PAUSE --", SCREEN_WIDTH/2 - 22, SCREEN_HEIGHT/2)
 end
 
 return PauseScene

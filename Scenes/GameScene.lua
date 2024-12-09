@@ -42,6 +42,7 @@ function GameScene:update(dt)
 end
 
 function GameScene:draw()    
+    fm:setFont("Game")
     em:draw()
 end
 

@@ -20,7 +20,14 @@ function PauseScene:update()
 end
 
 function PauseScene:draw()
-    love.graphics.print("-- PAUSE --", SCREEN_WIDTH/2 - 22, SCREEN_HEIGHT/2)
+    fm:setFont("Pause")
+    
+    local text = "-- PAUSE --"
+    love.graphics.print(text, (SCREEN_WIDTH - fm:getCurrentFontWidth(text))/2, (SCREEN_HEIGHT - fm:getCurrentFontHeight())/2)
+end
+
+function PauseScene:unload()
+
 end
 
 return PauseScene

@@ -1,6 +1,8 @@
 
 local SceneManager = require("/Managers/SceneManager")
 local LocaleManager = require("/Managers/LocaleManager")
+local FontManager = require("/Managers/FontManager")
+
 
 
 
@@ -12,6 +14,9 @@ love.graphics.setDefaultFilter("nearest")
 SCREEN_WIDTH, SCREEN_HEIGHT = love.graphics.getDimensions()
 
 function love.load()
+    fm = FontManager:new()
+    fm:loadFonts()
+
     lm = LocaleManager:new()
     lm:load(lm.currentLanguage)
 
@@ -20,7 +25,7 @@ function love.load()
 end
 
 function love.update(dt)
-   sm:update(dt)
+    sm:update(dt)
 end
 
 function love.draw()

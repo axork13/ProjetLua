@@ -60,4 +60,8 @@ function SceneManager:switchScene(pSceneType)
     self.currentScene:load()
 end
 
+function SceneManager:getSceneType()
+    return self.currentScene.type 
+end
+
 return SceneManager

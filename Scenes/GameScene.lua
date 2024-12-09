@@ -21,6 +21,15 @@ function GameScene:load()
     hero = Hero:new(100,100)    
     hero:load()
     em:addEntity(hero)
+    enemy = Enemy:new(100, 100)
+    enemy2 = Enemy:new(200, 400)
+    enemy3 = Enemy:new(400, 400)
+    enemy:load()
+    enemy2:load()
+    enemy3:load()
+    em:addEntity(enemy)
+    em:addEntity(enemy2)
+    em:addEntity(enemy3)
 end
 
 function GameScene:unload()
@@ -37,7 +46,7 @@ function GameScene:draw()
 end
 
 function GameScene:keypressed(key)
-    hero:keypressed(key)
+
 end
 
 return GameScene

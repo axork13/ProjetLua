@@ -59,8 +59,7 @@ function Hero:load()
     imgHalfRight = love.graphics.newImage("/Assets/Images/hero/half_heart_right.png")
 end
 
-function Hero:update(dt)
-    
+function Hero:update(dt)    
     local direction = Vector2:new()
 
     if love.keyboard.isDown("right") then

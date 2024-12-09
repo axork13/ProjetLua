@@ -1,72 +1,91 @@
+local Vector2 = require("/Libs/Vector2")
+
 --<====== Classe permettant de créer un Sprite ======>--
 local Enemy = {}
 
 function Enemy:new(pX, pY)
     local e = {}
-    e.x = pX or 100
-    e.y = pY or 100
-    e.vx = 1
-    e.spd = 50
+    e.pos = Vector2:new(pX or 100, pY or 100)
+    e.velocity = Vector2:new()
+    e.direction = Vector2:new()
+    while e.direction.x == 0 and e.direction.y == 0 do
+        e.direction = Vector2:new(math.random(-1,1),math.random(-1,1))
+    end
+    e.spd = math.random(50,100)
+    e.scale = 2
+    e.life = math.random(1, 5)
 
-    e.spriteSheet = {}
-    e.spriteSheet.nLines = 9
-    e.spriteSheet.nCols = 8
+    e.img = {}
     e.lstSprites = {}
     e.nFrames = {}
-    e.lstSprites["idle"] = {}
-    e.nFrames["idle"] = 2
-    e.lstSprites["blink"] = {}
-    e.nFrames["blink"] = 2
-    e.lstSprites["walk"] = {}
-    e.nFrames["walk"] = 2
-    e.lstSprites["run"] = {}
-    e.nFrames["run"] = 2
-    e.lstSprites["duck"] = {}
-    e.nFrames["duck"] = 2
-    e.lstSprites["jump"] = {}
-    e.nFrames["jump"] = 2
-    e.lstSprites["disappear"] = {}
-    e.nFrames["disappear"] = 2
-    e.lstSprites["die"] = {}
-    e.nFrames["die"] = 2
-    e.lstSprites["attack"] = {}
-    e.nFrames["attack"] = 2
+    e.lstSprites["walkleft"] = {}
+    e.nFrames["walkleft"] = 6
+    e.lstSprites["walkright"] = {}
+    e.nFrames["walkright"] = 6
+    e.lstSprites["walkup"] = {}
+    e.nFrames["walkup"] = 6
+    e.lstSprites["walkdown"] = {}
+    e.nFrames["walkdown"] = 6
 
-    e.state = "idle"
-    e.width = 32
-    e.height = 32
-
+    e.state = "walkright"
+    e.width = 48
+    e.height = 48
+    e.currentFrame = 1
 
     setmetatable(e, self)
     self.__index = self
+
     return e
 end
 
-function Enemy:load()
-    self.spriteSheet.img = love.graphics.newImage("/Assets/Images/hero/idle_hero.png")
-
-    for c=1, self.spriteSheet.nCols do
-        for l=1, self.spriteSheet.nLines do
-            if l == 1 then
-                local mySprite = love.graphics.newQuad((c-1)*self.width, (l-1)*self.height, self.width, self.height, self.spriteSheet.img)
-                table.insert(self.lstSprites["idle"], mySprite)
-            end
-        end
+function Enemy:loadImageState(pState, pStart, pImageName)
+    local imageName = pImageName or pState
+    self.img[pState] = love.graphics.newImage("/Assets/Images/enemies/"..imageName..".png")
+    
+    start = pStart or 1
+    for i=start, start + self.nFrames[pState] - 1 do
+        local mySprite = love.graphics.newQuad((i-1)*self.width, 0, self.width, self.height, self.img[pState])
+        table.insert(self.lstSprites[pState], mySprite)        
     end
-    self.currentImage = 1
 end
 
-function Enemy:update(dt)
-   
+function Enemy:load()
+    self:loadImageState("walkup", 1, "enemie")
+    self:loadImageState("walkdown", 7, "enemie")
+    self:loadImageState("walkright", 13, "enemie")
+    self:loadImageState("walkleft", 19, "enemie")
+end
+
+function Enemy:update(dt)  
+    if self.direction.x ~= 0 or self.direction.y ~= 0 then
+        self.direction:normalize()
+        self.velocity = self.direction * self.spd
+        if math.abs(self.direction.x) > math.abs(self.direction.y) then
+            self.state = self.direction.x > 0 and "walkright" or "walkleft"
+        else
+            self.state = self.direction.y > 0 and "walkdown" or "walkup"
+        end
+    end
+
+    self.pos = self.pos + self.velocity * dt
+
+    self:animate(dt)
 end
 
 function Enemy:draw()
     -- Drawing the Enemy
-    local nImage = math.floor(self.currentImage)
+    local nImage = math.floor(self.currentFrame)
     local EnemyQuad = self.lstSprites[self.state][nImage]
 
-    love.graphics.draw(self.spriteSheet.img, EnemyQuad, self.x - self.width / 2, self.y - self.height / 2, 0, 1, 1, self.width/2, self.height/2)
+    love.graphics.draw(self.img[self.state], EnemyQuad, self.pos.x - self.width / 2, self.pos.y - self.height / 2, 0, self.scale, self.scale, self.width/self.scale, self.height/self.scale)
+end
 
+function Enemy:animate(dt)
+    -- Anim enemy
+    self.currentFrame = self.currentFrame + dt * self.nFrames[self.state]
+    if self.currentFrame >= #self.lstSprites[self.state] + 1 then
+        self.currentFrame = 1
+    end
 end
 
 return Enemy

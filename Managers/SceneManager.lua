@@ -11,6 +11,7 @@ local SceneManager = {}
 function SceneManager:new()
     local sm = {}
     sm.lstScene = {}
+    sm.currentGameScene = nil
 
     setmetatable(sm, self)
     self.__index = self
@@ -35,29 +36,40 @@ function SceneManager:update(dt)
 end
 
 function SceneManager:draw()
+    if self.currentGameScene then
+        self.currentGameScene:draw()
+    end
+    
     self.currentScene:draw()
 end
 
-function SceneManager:keypressed(key)
+function SceneManager:keypressed(key, scancode, isrepeat)
     if key == "g" then
-        self:switchScene("Game")        
+        self.currentScene:unload()
+        self:switchScene("Game")  
+        self.currentScene:load()      
     end
 
     if key == "m" then
+        self.currentScene:unload()
         self:switchScene("Menu")
+        self.currentScene:load()
     end
 
-    if self.currentScene.type == "Game" then
-        if love.keyboard.isScancodeDown('p') then
+    if scancode == "p" then        
+        if self.currentScene.type == "Game" then
+            self.currentScene.isPaused = true
+            self.currentGameScene = self.currentScene
             self:switchScene("Pause")
+        elseif self.currentScene.type == "Pause" then
+            self:switchScene("Game")
+            self.currentScene.isPaused = false
         end
-    end
+    end       
 end
 
 function SceneManager:switchScene(pSceneType)
-    self.currentScene:unload()
-    self.currentScene = self.lstScene[pSceneType]
-    self.currentScene:load()
+    self.currentScene = self.lstScene[pSceneType]    
 end
 
 function SceneManager:getSceneType()

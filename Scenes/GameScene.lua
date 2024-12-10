@@ -9,6 +9,7 @@ local GameScene = {}
 function GameScene:new()
     local gs = {}
     gs.type = "Game"
+    gs.isPaused = false
     
     setmetatable(gs, self)
     self.__index = self
@@ -17,6 +18,7 @@ function GameScene:new()
 end
 
 function GameScene:load()    
+    self.isPaused = false
     em = EntityManager:new()
     hero = Hero:new(100,100)    
     hero:load()
@@ -38,10 +40,14 @@ function GameScene:unload()
 end
 
 function GameScene:update(dt)
+    if self.isPaused then
+        return
+    end
     em:update(dt)
 end
 
 function GameScene:draw()    
+
     fm:setFont("Game")
     em:draw()
 end

@@ -32,10 +32,10 @@ function love.draw()
     sm:draw()
 end
 
-function love.keypressed(key)
+function love.keypressed(key, scancode, isrepeat)
     if key == "l" then
         lm:switchLanguage()
     end
-    sm:keypressed(key)
+    sm:keypressed(key, scancode, isrepeat)
 end
 

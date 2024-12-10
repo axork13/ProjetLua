@@ -2,6 +2,10 @@
     "options" : {
     },
     "menu" : {
+        "play": "Play",
+        "quit": "Quit",
+        "control": "wasd",
+        "orou": "or"
     },
     "game" : {
         

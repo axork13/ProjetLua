@@ -5,14 +5,13 @@ function MenuScene:new()
     local ms = {}
     ms.type = "Menu"
     ms.textGameTitle = "Veggies Vengeance"
-    ms.textPlay = "Jouer"
-    ms.textQuit = "Quitter"
+    
+    self.textPlay = lm.locale["menu"]["play"]
+    self.textQuit = lm.locale["menu"]["quit"]
 
-    self.imgZQSD = love.graphics.newImage("/Assets/Images/menu/zqsd.png")
-    self.imgWASD = love.graphics.newImage("/Assets/Images/menu/wasd.png")
+    self.imgControl = love.graphics.newImage("/Assets/Images/menu/"..lm.locale["menu"]["control"]..".png")
     self.imgArrows = love.graphics.newImage("/Assets/Images/menu/arrows.png")
-    self.imgOR = love.graphics.newImage("/Assets/Images/menu/or.png")
-    self.imgOU = love.graphics.newImage("/Assets/Images/menu/ou.png")
+    self.imgOROU = love.graphics.newImage("/Assets/Images/menu/"..lm.locale["menu"]["orou"]..".png")
 
 
     setmetatable(ms, self)
@@ -22,6 +21,11 @@ function MenuScene:new()
 end
 
 function MenuScene:load()
+    self.textPlay = lm.locale["menu"]["play"]
+    self.textQuit = lm.locale["menu"]["quit"]
+    self.imgControl = love.graphics.newImage("/Assets/Images/menu/"..lm.locale["menu"]["control"]..".png")
+    self.imgArrows = love.graphics.newImage("/Assets/Images/menu/arrows.png")
+    self.imgOROU = love.graphics.newImage("/Assets/Images/menu/"..lm.locale["menu"]["orou"]..".png")
     
 end
 
@@ -41,9 +45,9 @@ function MenuScene:draw()
     love.graphics.print(self.textPlay, (SCREEN_WIDTH - fm:getCurrentFontWidth(self.textPlay))/2, (SCREEN_HEIGHT - fm:getCurrentFontHeight())/2)
     love.graphics.print(self.textQuit, (SCREEN_WIDTH - fm:getCurrentFontWidth(self.textQuit))/2, (SCREEN_HEIGHT - fm:getCurrentFontHeight())/2 + fm:getCurrentFontHeight())
 
-    love.graphics.draw(self.imgOR, 170, SCREEN_HEIGHT/4 * 3 - 50)
+    love.graphics.draw(self.imgOROU, 170, SCREEN_HEIGHT/4 * 3 - 50)
 
-    love.graphics.draw(self.imgWASD, 100, SCREEN_HEIGHT/4 * 3, 0, 2, 2)
+    love.graphics.draw(self.imgControl, 100, SCREEN_HEIGHT/4 * 3, 0, 2, 2)
     love.graphics.draw(self.imgArrows, 250, SCREEN_HEIGHT/4 * 3, 0, 2, 2)
 end
 

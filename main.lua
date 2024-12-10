@@ -35,6 +35,7 @@ end
 function love.keypressed(key, scancode, isrepeat)
     if key == "l" then
         lm:switchLanguage()
+        sm:load()
     end
     sm:keypressed(key, scancode, isrepeat)
 end

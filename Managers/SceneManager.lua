@@ -12,6 +12,13 @@ function SceneManager:new()
     local sm = {}
     sm.lstScene = {}
     sm.currentGameScene = nil
+    
+    sm.lstScene["Debug"] = Debug:new()
+    sm.lstScene["Menu"] = Menu:new()
+    sm.lstScene["Game"] = Game:new()
+    sm.lstScene["Pause"] = Pause:new()
+    sm.lstScene["GameOver"] = GameOver:new()
+    sm.lstScene["Victory"] = Victory:new()
 
     setmetatable(sm, self)
     self.__index = self
@@ -20,15 +27,8 @@ function SceneManager:new()
 end
 
 function SceneManager:load()
-    self.lstScene["Debug"] = Debug:new()
-    self.lstScene["Menu"] = Menu:new()
-    self.lstScene["Game"] = Game:new()
-    self.lstScene["Pause"] = Pause:new()
-    self.lstScene["GameOver"] = GameOver:new()
-    self.lstScene["Victory"] = Victory:new()
-
-
     self.currentScene = self.lstScene["Menu"]
+    self.currentScene:load()
 end
 
 function SceneManager:update(dt)
@@ -36,7 +36,7 @@ function SceneManager:update(dt)
 end
 
 function SceneManager:draw()
-    if self.currentGameScene then
+    if self.currentGameScene ~= nil then
         self.currentGameScene:draw()
     end
     
@@ -44,19 +44,33 @@ function SceneManager:draw()
 end
 
 function SceneManager:keypressed(key, scancode, isrepeat)
-    if key == "g" then
+    --< Lancer le jeu avec espace >--
+    if scancode == "space" and self.currentScene.type ~= "Game" then
         self.currentScene:unload()
         self:switchScene("Game")  
         self.currentScene:load()      
     end
 
-    if key == "m" then
-        self.currentScene:unload()
-        self:switchScene("Menu")
-        self.currentScene:load()
+    --< Revenir au menu depuis la pause >--
+    if self.currentScene.type == "Pause" then
+        if scancode == "escape" then
+            self.currentGameScene = nil
+            self.currentScene:unload()
+            self:switchScene("Menu")
+            self.currentScene:load()
+            return
+        end
     end
 
-    if scancode == "p" then        
+    --< Quitter le jeu depuis le menu >--
+    if self.currentScene.type == "Menu" then
+        if scancode == "escape" then
+            love.event.quit()
+        end
+    end
+
+    --< Gerer la pause >--
+    if scancode == "p" or scancode == "escape" then        
         if self.currentScene.type == "Game" then
             self.currentScene.isPaused = true
             self.currentGameScene = self.currentScene

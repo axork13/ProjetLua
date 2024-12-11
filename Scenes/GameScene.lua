@@ -20,12 +20,13 @@ end
 function GameScene:load()    
     self.isPaused = false
     em = EntityManager:new()
-    hero = Hero:new(100,100)    
+    hero = Hero:new(SCREEN_WIDTH/2,SCREEN_HEIGHT/2)  
+
     hero:load()
     em:addEntity(hero)
-    enemy = Enemy:new(100, 100)
-    enemy2 = Enemy:new(200, 400)
-    enemy3 = Enemy:new(400, 400)
+    enemy = Enemy:new()
+    enemy2 = Enemy:new()
+    enemy3 = Enemy:new()
     enemy:load()
     enemy2:load()
     enemy3:load()

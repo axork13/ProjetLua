@@ -1,4 +1,4 @@
-
+require("/Libs/Utils")
 local SceneManager = require("/Managers/SceneManager")
 local LocaleManager = require("/Managers/LocaleManager")
 local FontManager = require("/Managers/FontManager")

@@ -99,7 +99,7 @@ function Hero:draw()
     local nFrame = math.floor(self.currentFrame)
     local heroQuad = self.lstSprites[self.state][nFrame]
 
-    love.graphics.draw(self.img[self.state], heroQuad, self.pos.x - self.width / 2, self.pos.y - self.height / 2, 0, self.scale, self.scale, self.width/self.scale, self.height/self.scale)
+    love.graphics.draw(self.img[self.state], heroQuad, self.pos.x, self.pos.y, 0, self.scale, self.scale, self.width/self.scale, self.height/self.scale)
 
 end
 

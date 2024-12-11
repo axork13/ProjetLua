@@ -5,13 +5,16 @@ local Enemy = {}
 
 function Enemy:new(pX, pY)
     local e = {}
-    e.pos = Vector2:new(pX or 100, pY or 100)
-    e.velocity = Vector2:new()
-    e.direction = Vector2:new()
-    while e.direction.x == 0 and e.direction.y == 0 do
-        e.direction = Vector2:new(math.random(-1,1),math.random(-1,1))
-    end
+    e.pos = Vector2:new(pX or math.random(0, SCREEN_WIDTH), pY or math.random(0, SCREEN_HEIGHT))
     e.spd = math.random(50,100)
+    
+    local angle = math.angle(e.pos.x, e.pos.y, math.random(0, SCREEN_WIDTH), math. random(0, SCREEN_HEIGHT))
+    e.velocity = Vector2:new(e.spd * math.cos(angle), e.spd * math.sin(angle))
+
+
+    -- while e.direction.x == 0 and e.direction.y == 0 do
+    --     e.direction = Vector2:new(math.random(-1,1),math.random(-1,1))
+    -- end
     e.scale = 2
     e.life = math.random(1, 5)
 
@@ -57,13 +60,11 @@ function Enemy:load()
 end
 
 function Enemy:update(dt)  
-    if self.direction.x ~= 0 or self.direction.y ~= 0 then
-        self.direction:normalize()
-        self.velocity = self.direction * self.spd
-        if math.abs(self.direction.x) > math.abs(self.direction.y) then
-            self.state = self.direction.x > 0 and "walkright" or "walkleft"
+    if self.velocity.x ~= 0 or self.velocity.y ~= 0 then
+        if math.abs(self.velocity.x) > math.abs(self.velocity.y) then
+            self.state = self.velocity.x > 0 and "walkright" or "walkleft"
         else
-            self.state = self.direction.y > 0 and "walkdown" or "walkup"
+            self.state = self.velocity.y > 0 and "walkdown" or "walkup"
         end
     end
 
@@ -77,7 +78,7 @@ function Enemy:draw()
     local nImage = math.floor(self.currentFrame)
     local EnemyQuad = self.lstSprites[self.state][nImage]
 
-    love.graphics.draw(self.img[self.state], EnemyQuad, self.pos.x - self.width / 2, self.pos.y - self.height / 2, 0, self.scale, self.scale, self.width/self.scale, self.height/self.scale)
+    love.graphics.draw(self.img[self.state], EnemyQuad, self.pos.x, self.pos.y, 0, self.scale, self.scale, self.width/self.scale, self.height/self.scale)
 end
 
 function Enemy:animate(dt)

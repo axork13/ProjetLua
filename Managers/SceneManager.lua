@@ -45,7 +45,7 @@ end
 
 function SceneManager:keypressed(key, scancode, isrepeat)
     --< Lancer le jeu avec espace >--
-    if scancode == "space" and self.currentScene.type ~= "Game" then
+    if scancode == "space" and self.currentScene.type == "Menu" then
         self.currentScene:unload()
         self:switchScene("Game")  
         self.currentScene:load()      
@@ -75,11 +75,16 @@ function SceneManager:keypressed(key, scancode, isrepeat)
             self.currentScene.isPaused = true
             self.currentGameScene = self.currentScene
             self:switchScene("Pause")
-        elseif self.currentScene.type == "Pause" then
+            return
+        end
+    end   
+
+    if scancode == "p" or scancode == "space" then  
+        if self.currentScene.type == "Pause" then
             self:switchScene("Game")
             self.currentScene.isPaused = false
         end
-    end       
+    end
 end
 
 function SceneManager:switchScene(pSceneType)

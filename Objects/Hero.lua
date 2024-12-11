@@ -62,15 +62,15 @@ end
 function Hero:update(dt)    
     local direction = Vector2:new()
 
-    if love.keyboard.isDown("right") then
+    if love.keyboard.isScancodeDown('d', 'right') then
         direction.x = 1
-    elseif love.keyboard.isDown("left") then
+    elseif love.keyboard.isScancodeDown('a', 'left') then
         direction.x = -1
     end
     
-    if love.keyboard.isDown("up") then
+    if love.keyboard.isScancodeDown('w', 'up') then
         direction.y = -1
-    elseif love.keyboard.isDown("down") then
+    elseif love.keyboard.isScancodeDown('s', 'down') then
         direction.y = 1
     end
     

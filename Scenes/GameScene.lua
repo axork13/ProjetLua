@@ -24,15 +24,12 @@ function GameScene:load()
 
     hero:load()
     em:addEntity(hero)
-    enemy = Enemy:new()
-    enemy2 = Enemy:new()
-    enemy3 = Enemy:new()
-    enemy:load()
-    enemy2:load()
-    enemy3:load()
-    em:addEntity(enemy)
-    em:addEntity(enemy2)
-    em:addEntity(enemy3)
+
+    for i=1, 10 do
+        local enemy = Enemy:new()
+        enemy:load()        
+        em:addEntity(enemy)
+    end
 end
 
 function GameScene:unload()

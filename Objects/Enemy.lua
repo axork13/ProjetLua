@@ -6,15 +6,11 @@ local Enemy = {}
 function Enemy:new(pX, pY)
     local e = {}
     e.pos = Vector2:new(pX or math.random(0, SCREEN_WIDTH), pY or math.random(0, SCREEN_HEIGHT))
-    e.spd = math.random(50,100)
+    e.spd = math.random(5,20)
     
     local angle = math.angle(e.pos.x, e.pos.y, math.random(0, SCREEN_WIDTH), math. random(0, SCREEN_HEIGHT))
     e.velocity = Vector2:new(e.spd * math.cos(angle), e.spd * math.sin(angle))
 
-
-    -- while e.direction.x == 0 and e.direction.y == 0 do
-    --     e.direction = Vector2:new(math.random(-1,1),math.random(-1,1))
-    -- end
     e.scale = 2
     e.life = math.random(1, 5)
 

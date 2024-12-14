@@ -3,9 +3,6 @@ local SceneManager = require("/Managers/SceneManager")
 local LocaleManager = require("/Managers/LocaleManager")
 local FontManager = require("/Managers/FontManager")
 
-
-
-
 --< Empèche Love de filtrer les contours des images quand elles sont redimentionnées >--
 --< Indispensable pour du pixel art >--
 love.graphics.setDefaultFilter("nearest")

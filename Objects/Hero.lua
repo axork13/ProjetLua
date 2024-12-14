@@ -12,6 +12,13 @@ function Hero:new(pX, pY)
     h.spd = 200
     h.scale = 2
     h.life = 5
+    h.toDelete = false
+    h.entityType = "Hero"
+    
+    h.fireSpd = 60
+    h.fireRate = 2
+    h.fireRange = 20
+
     h.oldButtonDown = false
 
     h.img = {}
@@ -100,10 +107,8 @@ function Hero:update(dt)
     self.pos = self.pos + self.velocity * dt
     
     if love.mouse.isDown(1) then
-        if oldButtonDown==false then            
-            -- local x = math.cos(angle) * 24 + self.pos.x
-            -- local y = math.sin(angle) * 24 + self.pos.y
-            local bullet = Bullet:new(self.pos.x, self.pos.y, angle, 1)
+        if oldButtonDown==false then         
+            local bullet = Bullet:new(self, angle, 1)
             bullet:load()
             em:addEntity(bullet)
         end

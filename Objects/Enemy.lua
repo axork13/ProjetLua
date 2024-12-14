@@ -6,11 +6,13 @@ local Enemy = {}
 function Enemy:new(pX, pY)
     local e = {}
     e.pos = Vector2:new(pX or math.random(0, SCREEN_WIDTH), pY or math.random(0, SCREEN_HEIGHT))
-    self.spd = math.random(5,20)
-    self.velocity = Vector2:new()
+    e.spd = math.random(5,20)
+    e.velocity = Vector2:new()
+    e.entityType = "Enemy"
 
     e.scale = 2
     e.life = math.random(1, 5)
+    e.toDelete = false
 
     e.state = {}
     e.state.NONE = "None"

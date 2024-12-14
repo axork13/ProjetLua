@@ -3,16 +3,22 @@ local Vector2 = require("/Libs/Vector2")
 --<====== Classe permettant de créer une Bullet ======>--
 local Bullet = {}
 
-function Bullet:new(pX, pY, pAngle, pType)
+function Bullet:new(pEntity, pAngle, pType)
     local n = {}
-    n.pos = Vector2:new(pX or 100, pY or 100)
+    local startX = pEntity.pos.x + math.cos(pAngle) * 35
+    local startY = pEntity.pos.y + math.sin(pAngle) * 35
+    n.pos = Vector2:new(startX, startY)
+    n.entityType = "Bullet"
     n.type = pType or 1
     n.img = {}
     n.width = 0
     n.height = 0
-    n.spd = 50
+    n.fireSpd = pEntity.fireSpd
+    n.fireRate = pEntity.fireRate
+    n.fireRange = pEntity.fireRange
     n.angle = pAngle
-    n.direction = Vector2:new()
+    n.velocity = Vector2:new()
+    n.toDelete = false
    
     setmetatable(n, self)
     self.__index = self
@@ -31,13 +37,13 @@ function Bullet:load()
 end
 
 function Bullet:update(dt)    
-    self.direction.x = self.spd * math.cos(self.angle) 
-    self.direction.y = self.spd * math.sin(self.angle)
+    self.velocity.x = self.fireSpd * math.cos(self.angle) 
+    self.velocity.y = self.fireSpd * math.sin(self.angle)
     -- Applique la Vélocité
-    self.direction:normalize()   
+    self.pos.x = self.pos.x + self.velocity.x * self.fireRate * dt
+    self.pos.y = self.pos.y + self.velocity.y * self.fireRate * dt
 
-    self.pos.x = self.pos.x + (self.direction.x * 60 * dt) 
-    self.pos.y = self.pos.y + (self.direction.y * 60 * dt)
+    self:checkBorderCollision()
 end
 
 function Bullet:draw()
@@ -45,6 +51,19 @@ function Bullet:draw()
 end
 
 function Bullet:keypressed(key)
+end
+
+function Bullet:checkBorderCollision()
+    if self.pos.x < self.width/2 then
+        self.toDelete = true
+    elseif self.pos.x > SCREEN_WIDTH - self.width/2 then         
+        self.toDelete = true
+    end
+    if self.pos.y < self.height / 2 then
+        self.toDelete = true
+    elseif self.pos.y > SCREEN_HEIGHT - self.height / 2 then         
+        self.toDelete = true
+    end
 end
 
 return Bullet

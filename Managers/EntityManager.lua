@@ -18,8 +18,7 @@ function EntityManager:addEntity(pEntity)
     table.insert(self.lstEntities, pEntity)
 end
 
-function EntityManager:deleteEntity()
-    
+function EntityManager:deleteEntity()    
     for i=#self.lstEntities, 1, -1 do        
         entity = self.lstEntities[i]
         if entity.toDelete then
@@ -34,7 +33,6 @@ function EntityManager:update(dt)
 
         entity:update(dt)
     end
-    self:deleteEntity()
 end
 
 function EntityManager:draw()
@@ -63,6 +61,55 @@ function EntityManager:countEntityByType()
     end
 
     return "Hero : "..nHero.." , Enemy : "..nEnemy.." , Bullet : "..nBullet
+end
+
+function EntityManager:checkCollision()
+    for i=1, #self.lstEntities do
+        if self.lstEntities[i].entityType == "Enemy" then
+            local enemy = self.lstEntities[i]
+            local enemyBox = {
+                x = enemy.pos.x + enemy.width/(enemy.scale*2),
+                y = enemy.pos.y-(enemy.scale*2),
+                w = enemy.width/(enemy.scale),
+                h = enemy.height-(enemy.scale*2)
+            }
+
+            for j=1, #self.lstEntities do
+                -- Check collision Enemy/Bullet
+                if self.lstEntities[j].entityType == "Bullet" then
+                    local bullet = self.lstEntities[j]
+            
+                    local bulletBox = {
+                        x = bullet.pos.x - bullet.width / 2, 
+                        y = bullet.pos.y - bullet.height/2,
+                        w = bullet.width,
+                        h = bullet.height
+                    }                   
+
+                    if checkAABBCollision(bulletBox.x, bulletBox.y, bulletBox.w, bulletBox.h, enemyBox.x, enemyBox.y, enemyBox.w, enemyBox.h) then
+                        bullet.toDelete = true
+                        enemy:takeDamage()
+                    end
+                end
+
+                -- Check collision Enemy/Hero
+                if self.lstEntities[j].entityType == "Hero" then
+                    local hero = self.lstEntities[j]
+            
+                    local heroBox = {
+                        x = hero.pos.x + hero.width/(hero.scale*2),
+                        y = hero.pos.y-(hero.scale*2),
+                        w = hero.width/(hero.scale),
+                        h = hero.height-(hero.scale*2)
+                    }                   
+
+                    if checkAABBCollision(heroBox.x, heroBox.y, heroBox.w, heroBox.h, enemyBox.x, enemyBox.y, enemyBox.w, enemyBox.h) then
+                        hero:takeDamage(0.5)
+                    end
+                end
+            end
+        end 
+    end
 end
 
 return EntityManager

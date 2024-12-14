@@ -42,6 +42,8 @@ function GameScene:update(dt)
         return
     end
     em:update(dt)
+    em:checkCollision()
+    em:deleteEntity()
 end
 
 function GameScene:draw()    

@@ -13,6 +13,9 @@ function Hero:new(pX, pY)
     h.scale = 2
     h.life = 5
     h.toDelete = false
+    h.isInvincible = false
+    h.invincibleTimer = 0
+    h.invincibleDuration = 1
     h.entityType = "Hero"
     
     h.fireSpd = 60
@@ -117,6 +120,14 @@ function Hero:update(dt)
         oldButtonDown = false
     end
 
+    -- Frame d'invulnérabilité après un hit
+    if self.isInvincible then
+        self.invincibleTimer = self.invincibleTimer - dt
+        if self.invincibleTimer <= 0 then
+            self.isInvincible = false
+        end
+    end
+
     self:animate(dt)
 end
 
@@ -127,7 +138,18 @@ function Hero:draw()
     local nFrame = math.floor(self.currentFrame)
     local heroQuad = self.lstSprites[self.state][nFrame]
 
-    love.graphics.draw(self.img[self.state], heroQuad, self.pos.x, self.pos.y, 0,self.scale, self.scale, self.width/self.scale, self.height/self.scale)
+    if self.isInvincible then
+        if math.floor(self.invincibleTimer * 10) % 2 == 0 then
+            love.graphics.setColor(1, 1, 1, 0.5) -- Transparence partielle
+        else
+            love.graphics.setColor(1, 1, 1, 1) -- Couleur normale
+        end
+    else
+        love.graphics.setColor(1, 1, 1, 1) -- Couleur normale
+    end
+    love.graphics.draw(self.img[self.state], heroQuad, self.pos.x, self.pos.y, 0,self.scale, self.scale, self.width/(self.scale*2), self.height/(self.scale*2))
+    drawCollideBox(self.pos.x + self.width/(self.scale*2), self.pos.y-(self.scale*2), self.width/(self.scale), self.height-(self.scale*2))
+    love.graphics.setColor(1, 1, 1, 1) -- Couleur normale
 
 end
 
@@ -162,6 +184,17 @@ function Hero:keypressed(key)
 
     if key == "kp+" then
         self.life = self.life + 0.5
+    end
+end
+
+function Hero:takeDamage(pDamage)
+    if not self.isInvincible then
+        self.life = self.life - pDamage
+        self.isInvincible = true
+        self.invincibleTimer = self.invincibleDuration
+    end
+    if self.life <= 0 then
+        self.toDelete = true
     end
 end
 

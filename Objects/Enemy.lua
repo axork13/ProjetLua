@@ -101,7 +101,12 @@ function Enemy:draw()
     local nImage = math.floor(self.currentFrame)
     local EnemyQuad = self.lstSprites[self.imgState][nImage]
 
-    love.graphics.draw(self.img[self.imgState], EnemyQuad, self.pos.x, self.pos.y, 0, self.scale, self.scale, self.width/self.scale, self.height/self.scale)
+    -- love.graphics.draw(self.img[self.imgState], EnemyQuad, self.pos.x, self.pos.y, 0, self.scale, self.scale, self.width/self.scale, self.height/self.scale)
+    love.graphics.draw(self.img[self.imgState], EnemyQuad, self.pos.x, self.pos.y, 0, 2,2, self.width/(self.scale*2), self.height/(self.scale*2))
+
+    drawCollideBox(self.pos.x + self.width/(self.scale*2), self.pos.y-(self.scale*2), self.width/(self.scale), self.height-(self.scale*2))
+    love.graphics.print(self.life, self.pos.x + self.width/(self.scale*2), self.pos.y-(self.scale*2))
+
 end
 
 function Enemy:animate(dt)
@@ -126,6 +131,14 @@ function Enemy:checkBorderCollision()
     elseif self.pos.y > SCREEN_HEIGHT - self.height / (self.scale*2) then         
         self.pos.y = SCREEN_HEIGHT - self.height / (self.scale*2)
         self.currentState = self.state.CHANGEDIR
+    end
+end
+
+function Enemy:takeDamage()
+    self.life = self.life - 1
+
+    if self.life <= 0 then
+        self.toDelete = true
     end
 end
 

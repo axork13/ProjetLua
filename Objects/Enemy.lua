@@ -11,7 +11,7 @@ function Enemy:new(pX, pY)
     e.entityType = "Enemy"
 
     e.scale = 2
-    e.life = math.random(1, 5)
+    e.life = math.random(2, 5)
     e.toDelete = false
 
     e.state = {}
@@ -19,7 +19,7 @@ function Enemy:new(pX, pY)
     e.state.WALK = "Walk"
     e.state.CHANGEDIR = "ChangeDir"
     e.state.ATTACK = "Attack"
-    e.state.SUPERATTACK = "SuperAttack"
+    e.state.RUNAWAY = "RunAway"
 
     e.currentState = e.state.NONE
 
@@ -71,8 +71,9 @@ function Enemy:update(dt)
         self.currentState = self.state.CHANGEDIR
     end
 
-    if self.currentState == self.state.CHANGEDIR then    
-        local angle = math.angle(self.pos.x, self.pos.y, math.random(0, SCREEN_WIDTH), math. random(0, SCREEN_HEIGHT))
+    if self.currentState == self.state.CHANGEDIR then
+        self.spd = math.random(5, 20)
+        local angle = math.angle(self.pos.x, self.pos.y, math.random(0, SCREEN_WIDTH), math.random(0, SCREEN_HEIGHT))
         vx = self.spd * math.cos(angle)
         vy = self.spd * math.sin(angle)
         self.velocity = Vector2:new(vx,vy)
@@ -88,10 +89,19 @@ function Enemy:update(dt)
         self.currentState = self.state.WALK
     end
 
+    if self.currentState == self.state.RUNAWAY then        
+        self:runAwayFrom(hero)
+        self.currentState = self.state.WALK
+    end
+
     if self.currentState == self.state.WALK then        
         self.pos = self.pos + self.velocity * dt
         self:checkBorderCollision()
-    end
+    end    
+
+    if self.life <= 1 and self.currentState == self.state.WALK then
+        self.currentState = self.state.RUNAWAY
+    end    
     
     self:animate(dt)
 end
@@ -101,7 +111,6 @@ function Enemy:draw()
     local nImage = math.floor(self.currentFrame)
     local EnemyQuad = self.lstSprites[self.imgState][nImage]
 
-    -- love.graphics.draw(self.img[self.imgState], EnemyQuad, self.pos.x, self.pos.y, 0, self.scale, self.scale, self.width/self.scale, self.height/self.scale)
     love.graphics.draw(self.img[self.imgState], EnemyQuad, self.pos.x, self.pos.y, 0, 2,2, self.width/(self.scale*2), self.height/(self.scale*2))
 
     drawCollideBox(self.pos.x + self.width/(self.scale*2), self.pos.y-(self.scale*2), self.width/(self.scale), self.height-(self.scale*2))
@@ -118,7 +127,7 @@ function Enemy:animate(dt)
 end
 
 function Enemy:checkBorderCollision()
-    if self.pos.x < self.width / (self.scale*2) then
+    if self.pos.x < self.width/(self.scale*2) / (self.scale*2) then
         self.pos.x = self.width / (self.scale*2)
         self.currentState = self.state.CHANGEDIR
     elseif self.pos.x > SCREEN_WIDTH - self.width / (self.scale*2) then         
@@ -140,6 +149,19 @@ function Enemy:takeDamage()
     if self.life <= 0 then
         self.toDelete = true
     end
+end
+
+function Enemy:runAwayFrom(pHero)
+    -- Calculer le vecteur vers la position du héros
+    local direction = Vector2:new(pHero.pos.x - self.pos.x, pHero.pos.y - self.pos.y)
+
+    -- Inverser la direction pour aller à l'opposé
+    direction = -direction
+    direction:normalize()
+
+    -- Multiplier par la vitesse pour obtenir la vélocité
+    self.velocity.x = direction.x * self.spd *4
+    self.velocity.y = direction.y * self.spd *4
 end
 
 return Enemy

@@ -1,5 +1,5 @@
 EntityManager = require("/Managers/EntityManager")
-local Hero = require("/Objects/Hero")
+Hero = require("/Objects/Hero")
 local Enemy = require("/Objects/Enemy")
 
 

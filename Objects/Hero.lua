@@ -1,4 +1,5 @@
 local Vector2 = require("/Libs/Vector2")
+local Bullet = require("/Objects/Bullet")
 
 --<====== Classe permettant de créer un Sprite ======>--
 local Hero = {}
@@ -11,6 +12,7 @@ function Hero:new(pX, pY)
     h.spd = 200
     h.scale = 2
     h.life = 5
+    h.oldButtonDown = false
 
     h.img = {}
     h.lstSprites = {}
@@ -97,6 +99,19 @@ function Hero:update(dt)
     
     self.pos = self.pos + self.velocity * dt
     
+    if love.mouse.isDown(1) then
+        if oldButtonDown==false then            
+            -- local x = math.cos(angle) * 24 + self.pos.x
+            -- local y = math.sin(angle) * 24 + self.pos.y
+            local bullet = Bullet:new(self.pos.x, self.pos.y, angle, 1)
+            bullet:load()
+            em:addEntity(bullet)
+        end
+        oldButtonDown = true
+    else
+        oldButtonDown = false
+    end
+
     self:animate(dt)
 end
 

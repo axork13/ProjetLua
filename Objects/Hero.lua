@@ -11,7 +11,7 @@ function Hero:new(pX, pY)
     h.mouseDirection = Vector2:new()
     h.spd = 200
     h.scale = 2
-    h.life = 5
+    h.life = 0.5
     h.toDelete = false
     h.isInvincible = false
     h.invincibleTimer = 0
@@ -197,15 +197,10 @@ end
 function Hero:takeDamage(pDamage)
     if not self.isInvincible then
         self.life = self.life - pDamage
-        self.score = self.score - 10
-        if self.score < 0 then
-            self.score = 0
-        end
         self.isInvincible = true
         self.invincibleTimer = self.invincibleDuration
     end
     if self.life <= 0 then
-        self.score = self.score - 100
         self.toDelete = true
     end
 end

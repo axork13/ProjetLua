@@ -34,9 +34,11 @@ end
 function SceneManager:update(dt)
     if self.currentScene.type == "Game" then
         if self.currentScene.isGameOver then
+            local score = self.currentScene.gameScore
             self.currentScene:unload()
             self:switchScene("GameOver") 
             self.currentScene:load()
+            self.currentScene.gameScore = score
         end
     end
     self.currentScene:update(dt)

@@ -17,6 +17,7 @@ function GameScene:new()
     gs.spawnRate = 3
     gs.minSpawnRate = 0.5
     gs.lastRateScore = 0
+    gs.gameScore = 0
     
     setmetatable(gs, self)
     self.__index = self
@@ -54,6 +55,7 @@ function GameScene:update(dt)
 
     if hero.life <= 0 then
         self.isGameOver = true
+        self.gameScore = hero.score
     end
 end
 

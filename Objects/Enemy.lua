@@ -147,10 +147,12 @@ function Enemy:checkBorderCollision()
     end
 end
 
-function Enemy:takeDamage()
+function Enemy:takeDamage(pHero)
     self.life = self.life - 1
+    pHero.score = pHero.score + 10
 
     if self.life <= 0 then
+        pHero.score = pHero.score + 50
         self.toDelete = true
     end
 end

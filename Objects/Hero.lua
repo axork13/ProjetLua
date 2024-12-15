@@ -24,6 +24,8 @@ function Hero:new(pX, pY)
 
     h.oldButtonDown = false
 
+    h.score = 0
+
     h.img = {}
     h.lstSprites = {}
     h.nFrames = {}
@@ -133,6 +135,11 @@ end
 
 function Hero:draw()
     self:drawLife()
+    
+    fm:setFont("Game")
+    
+    love.graphics.print("Score : "..self.score, (SCREEN_WIDTH - fm:getCurrentFontWidth("Score : "..self.score))/2, 10)
+
 
     -- Drawing the hero
     local nFrame = math.floor(self.currentFrame)
@@ -190,10 +197,15 @@ end
 function Hero:takeDamage(pDamage)
     if not self.isInvincible then
         self.life = self.life - pDamage
+        self.score = self.score - 10
+        if self.score < 0 then
+            self.score = 0
+        end
         self.isInvincible = true
         self.invincibleTimer = self.invincibleDuration
     end
     if self.life <= 0 then
+        self.score = self.score - 100
         self.toDelete = true
     end
 end

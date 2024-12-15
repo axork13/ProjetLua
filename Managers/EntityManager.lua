@@ -21,13 +21,14 @@ function EntityManager:addEntity(pEntity)
     table.insert(self.lstEntities, pEntity)
 end
 
-function EntityManager:deleteEntity()    
+function EntityManager:deleteEntity(pHero)    
     for i=#self.lstEntities, 1, -1 do        
         entity = self.lstEntities[i]
         if entity.toDelete then
             table.remove(self.lstEntities, i)
         end
     end
+
 end
 
 function EntityManager:update(dt)
@@ -44,7 +45,7 @@ function EntityManager:draw()
 
         entity:draw()
     end
-    love.graphics.print(self:countEntityByType(), 120, 10)
+    -- love.graphics.print(self:countEntityByType(), 120, 10)
 end
 
 function EntityManager:countEntityByType()
@@ -90,7 +91,7 @@ function EntityManager:checkCollision()
 
                     if checkAABBCollision(bulletBox.x, bulletBox.y, bulletBox.w, bulletBox.h, enemyBox.x, enemyBox.y, enemyBox.w, enemyBox.h) then
                         bullet.toDelete = true
-                        enemy:takeDamage()
+                        enemy:takeDamage(hero)
                     end
                 end
 

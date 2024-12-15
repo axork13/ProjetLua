@@ -4,6 +4,9 @@ local EntityManager = {}
 function EntityManager:new()
     local em = {}
     em.lstEntities = {}
+    em.nHero = 0
+    em.nEnemy = 0
+    em.nBullet = 0
 
     setmetatable(em, self)
     self.__index = self
@@ -45,22 +48,21 @@ function EntityManager:draw()
 end
 
 function EntityManager:countEntityByType()
-    local nHero = 0
-    local nEnemy = 0
-    local nBullet = 0
-
+    self.nHero = 0
+    self.nEnemy = 0
+    self.nBullet = 0
     for i=1, #self.lstEntities do
         entity = self.lstEntities[i]
         if entity.entityType == "Hero" then
-            nHero = nHero + 1
+            self.nHero = self.nHero + 1
         elseif entity.entityType == "Enemy" then
-            nEnemy = nEnemy + 1
+            self.nEnemy = self.nEnemy + 1
         elseif entity.entityType == "Bullet" then
-            nBullet = nBullet + 1
+            self.nBullet = self.nBullet + 1
         end
     end
 
-    return "Hero : "..nHero.." , Enemy : "..nEnemy.." , Bullet : "..nBullet
+    return "Hero : "..self.nHero.." , Enemy : "..self.nEnemy.." , Bullet : "..self.nBullet
 end
 
 function EntityManager:checkCollision()

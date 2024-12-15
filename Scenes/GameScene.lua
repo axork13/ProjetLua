@@ -11,6 +11,10 @@ function GameScene:new()
     gs.type = "Game"
     gs.isPaused = false
     gs.isGameOver = false
+
+    gs.MAX_ENEMIES = 5
+    gs.spawnTimer = 0
+    gs.spawnRate = 2
     
     setmetatable(gs, self)
     self.__index = self
@@ -27,12 +31,6 @@ function GameScene:load()
 
     hero:load()
     em:addEntity(hero)
-
-    for i=1, 10 do
-        local enemy = Enemy:new()
-        enemy:load()        
-        em:addEntity(enemy)
-    end
 end
 
 function GameScene:unload()
@@ -44,6 +42,9 @@ end
 function GameScene:update(dt)
     if self.isPaused then
         return
+    end
+    if em.nEnemy < self.MAX_ENEMIES then
+        self:enemySpawn(dt)
     end
     em:update(dt)
     em:checkCollision()
@@ -61,7 +62,18 @@ end
 
 function GameScene:keypressed(key)
 
+end
 
+function GameScene:enemySpawn(dt)
+    self.spawnTimer = self.spawnTimer + dt
+
+    if self.spawnTimer >= self.spawnRate then
+        local enemy = Enemy:new()
+        enemy:load()        
+        em:addEntity(enemy)
+
+        self.spawnTimer = 0
+    end
 end
 
 return GameScene

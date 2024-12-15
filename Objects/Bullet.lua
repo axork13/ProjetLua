@@ -5,8 +5,8 @@ local Bullet = {}
 
 function Bullet:new(pEntity, pAngle, pType)
     local n = {}
-    local startX = pEntity.pos.x + math.cos(pAngle) * 35
-    local startY = pEntity.pos.y + math.sin(pAngle) * 35
+    local startX = pEntity.pos.x + pEntity.width/(pEntity.scale*2) + pEntity.scale*2 + math.cos(pAngle) * 35
+    local startY = pEntity.pos.y + pEntity.height/(pEntity.scale*2) + pEntity.scale*2 + math.sin(pAngle) * 35
     n.startPos = Vector2:new(startX, startY) 
     
     n.pos = Vector2:new(startX, startY)

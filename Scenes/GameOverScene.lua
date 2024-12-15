@@ -15,12 +15,19 @@ function GameOverScene:load()
 
 end
 
+function GameOverScene:unload()
+
+end
+
 function GameOverScene:update()
 
 end
 
 function GameOverScene:draw()
-    love.graphics.print(self.type, 400, 300)
+    fm:setFont("GameOver")
+    
+    local text = "-- GAME OVER --"
+    love.graphics.print(text, (SCREEN_WIDTH - fm:getCurrentFontWidth(text))/2, (SCREEN_HEIGHT - fm:getCurrentFontHeight())/2)
 end
 
 return GameOverScene

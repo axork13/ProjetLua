@@ -7,6 +7,7 @@ function Bullet:new(pEntity, pAngle, pType)
     local n = {}
     local startX = pEntity.pos.x + math.cos(pAngle) * 35
     local startY = pEntity.pos.y + math.sin(pAngle) * 35
+    
     n.pos = Vector2:new(startX, startY)
     n.entityType = "Bullet"
     n.type = pType or 1

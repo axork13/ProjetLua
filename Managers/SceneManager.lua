@@ -32,6 +32,13 @@ function SceneManager:load()
 end
 
 function SceneManager:update(dt)
+    if self.currentScene.type == "Game" then
+        if self.currentScene.isGameOver then
+            self.currentScene:unload()
+            self:switchScene("GameOver") 
+            self.currentScene:load()
+        end
+    end
     self.currentScene:update(dt)
 end
 
@@ -83,6 +90,19 @@ function SceneManager:keypressed(key, scancode, isrepeat)
         if self.currentScene.type == "Pause" then
             self:switchScene("Game")
             self.currentScene.isPaused = false
+        end
+    end
+
+    --< Relancer le jeu depuis le Game Over >--
+    if scancode == "space" and self.currentScene.type == "GameOver" then
+        self.currentScene:unload()
+        self:switchScene("Game")  
+        self.currentScene:load()      
+    end
+
+    if self.currentScene.type == "GameOver" then
+        if scancode == "escape" then
+            love.event.quit()
         end
     end
 end

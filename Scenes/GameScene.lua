@@ -10,6 +10,7 @@ function GameScene:new()
     local gs = {}
     gs.type = "Game"
     gs.isPaused = false
+    gs.isGameOver = false
     
     setmetatable(gs, self)
     self.__index = self
@@ -19,6 +20,8 @@ end
 
 function GameScene:load()    
     self.isPaused = false
+    self.isGameOver = false
+
     em = EntityManager:new()
     hero = Hero:new(SCREEN_WIDTH/2,SCREEN_HEIGHT/2)  
 
@@ -35,6 +38,7 @@ end
 function GameScene:unload()
     hero = nil
     em = nil
+    love.mouse.setCursor()
 end
 
 function GameScene:update(dt)
@@ -44,6 +48,10 @@ function GameScene:update(dt)
     em:update(dt)
     em:checkCollision()
     em:deleteEntity()
+
+    if hero.life <= 0 then
+        self.isGameOver = true
+    end
 end
 
 function GameScene:draw()    

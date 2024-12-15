@@ -16,6 +16,7 @@ function FontManager:loadFonts()
     self:addFont("Menu", "/Assets/Fonts/LuckiestGuy.ttf", 40)
     self:addFont("Game", "/Assets/Fonts/LuckiestGuy.ttf", 18)
     self:addFont("Pause", "/Assets/Fonts/LuckiestGuy.ttf", 30)
+    self:addFont("GameOver", "/Assets/Fonts/LuckiestGuy.ttf", 30)
 end
 
 function FontManager:addFont(pName, pFilename, pSize)

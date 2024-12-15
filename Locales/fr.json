@@ -5,7 +5,8 @@
         "play": "Jouer",
         "quit": "Quitter",
         "control": "zqsd",
-        "orou": "ou"
+        "orou": "ou",
+        "shoot": "tirer"
     },
     "game" : {
         

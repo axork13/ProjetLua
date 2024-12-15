@@ -12,7 +12,8 @@ function MenuScene:new()
     self.imgControl = love.graphics.newImage("/Assets/Images/menu/"..lm.locale["menu"]["control"]..".png")
     self.imgArrows = love.graphics.newImage("/Assets/Images/menu/arrows.png")
     self.imgOROU = love.graphics.newImage("/Assets/Images/menu/"..lm.locale["menu"]["orou"]..".png")
-
+    self.imgShoot = love.graphics.newImage("/Assets/Images/menu/"..lm.locale["menu"]["shoot"]..".png")
+    self.imgMouse = love.graphics.newImage("/Assets/Images/menu/mouse.png")
 
     setmetatable(ms, self)
     self.__index = self
@@ -26,7 +27,9 @@ function MenuScene:load()
     self.imgControl = love.graphics.newImage("/Assets/Images/menu/"..lm.locale["menu"]["control"]..".png")
     self.imgArrows = love.graphics.newImage("/Assets/Images/menu/arrows.png")
     self.imgOROU = love.graphics.newImage("/Assets/Images/menu/"..lm.locale["menu"]["orou"]..".png")
-    
+    self.imgShoot = love.graphics.newImage("/Assets/Images/menu/"..lm.locale["menu"]["shoot"]..".png")
+    self.imgMouse = love.graphics.newImage("/Assets/Images/menu/mouse.png")    
+    love.mouse.setCursor()
 end
 
 function MenuScene:unload()
@@ -46,9 +49,12 @@ function MenuScene:draw()
     love.graphics.print(self.textQuit, (SCREEN_WIDTH - fm:getCurrentFontWidth(self.textQuit))/2, (SCREEN_HEIGHT - fm:getCurrentFontHeight())/2 + fm:getCurrentFontHeight())
 
     love.graphics.draw(self.imgOROU, 170, SCREEN_HEIGHT/4 * 3 - 50)
+    love.graphics.draw(self.imgShoot, SCREEN_WIDTH/4 * 3 + 20, SCREEN_HEIGHT/4 * 3 - 50)
 
     love.graphics.draw(self.imgControl, 100, SCREEN_HEIGHT/4 * 3, 0, 2, 2)
     love.graphics.draw(self.imgArrows, 250, SCREEN_HEIGHT/4 * 3, 0, 2, 2)
+    love.graphics.draw(self.imgMouse, SCREEN_WIDTH/4 * 3, SCREEN_HEIGHT/4 * 3, 0, 2, 2)
+
 end
 
 return MenuScene

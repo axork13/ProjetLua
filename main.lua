@@ -7,6 +7,8 @@ local FontManager = require("/Managers/FontManager")
 --< Indispensable pour du pixel art >--
 love.graphics.setDefaultFilter("nearest")
 
+math.randomseed(os.time())
+
 --<= VARIABLE GLOBALE DU JEU >--
 SCREEN_WIDTH, SCREEN_HEIGHT = love.graphics.getDimensions()
 

@@ -11,7 +11,7 @@ function Hero:new(pX, pY)
     h.mouseDirection = Vector2:new()
     h.spd = 200
     h.scale = 2
-    h.life = 0.5
+    h.life = 5
     h.toDelete = false
     h.isInvincible = false
     h.invincibleTimer = 0
@@ -155,7 +155,7 @@ function Hero:draw()
         love.graphics.setColor(1, 1, 1, 1) -- Couleur normale
     end
     love.graphics.draw(self.img[self.state], heroQuad, self.pos.x, self.pos.y, 0,self.scale, self.scale, self.width/(self.scale*2), self.height/(self.scale*2))
-    drawCollideBox(self.pos.x + self.width/(self.scale*2), self.pos.y-(self.scale*2), self.width/(self.scale), self.height-(self.scale*2))
+    --drawCollideBox(self.pos.x + self.width/(self.scale*2), self.pos.y-(self.scale*2), self.width/(self.scale), self.height-(self.scale*2))
     love.graphics.setColor(1, 1, 1, 1) -- Couleur normale
 
 end

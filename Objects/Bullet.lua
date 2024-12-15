@@ -51,7 +51,7 @@ end
 
 function Bullet:draw()
     love.graphics.draw(self.img, self.pos.x, self.pos.y, self.angle + math.rad(-90), 1, 1, self.width/2, self.height/2)
-    drawCollideBox(self.pos.x - self.width / 2, self.pos.y - self.height/2, self.width, self.height)
+    --drawCollideBox(self.pos.x - self.width / 2, self.pos.y - self.height/2, self.width, self.height)
 end
 
 

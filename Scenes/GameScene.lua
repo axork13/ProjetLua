@@ -14,7 +14,7 @@ function GameScene:new()
 
     gs.MAX_ENEMIES = 100
     gs.spawnTimer = 0
-    gs.spawnRate = 3
+    gs.spawnRate = 2
     gs.minSpawnRate = 0.5
     gs.lastRateScore = 0
     gs.gameScore = 0

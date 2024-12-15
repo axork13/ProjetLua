@@ -117,8 +117,8 @@ function Enemy:draw()
 
     love.graphics.draw(self.img[self.imgState], EnemyQuad, self.pos.x, self.pos.y, 0, 2,2, self.width/(self.scale*2), self.height/(self.scale*2))
 
-    drawCollideBox(self.pos.x + self.width/(self.scale*2), self.pos.y-(self.scale*2), self.width/(self.scale), self.height-(self.scale*2))
-    love.graphics.print(self.life, self.pos.x + self.width/(self.scale*2), self.pos.y-(self.scale*2))
+    --drawCollideBox(self.pos.x + self.width/(self.scale*2), self.pos.y-(self.scale*2), self.width/(self.scale), self.height-(self.scale*2))
+    --love.graphics.print(self.life, self.pos.x + self.width/(self.scale*2), self.pos.y-(self.scale*2))
 
 end
 

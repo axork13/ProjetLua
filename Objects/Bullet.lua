@@ -7,6 +7,7 @@ function Bullet:new(pEntity, pAngle, pType)
     local n = {}
     local startX = pEntity.pos.x + math.cos(pAngle) * 35
     local startY = pEntity.pos.y + math.sin(pAngle) * 35
+    n.startPos = Vector2:new(startX, startY) 
     
     n.pos = Vector2:new(startX, startY)
     n.entityType = "Bullet"
@@ -45,6 +46,7 @@ function Bullet:update(dt)
     self.pos.y = self.pos.y + self.velocity.y * self.fireRate * dt
 
     self:checkBorderCollision()
+    self:checkRange()
 end
 
 function Bullet:draw()
@@ -65,6 +67,13 @@ function Bullet:checkBorderCollision()
     if self.pos.y < self.height / 2 then
         self.toDelete = true
     elseif self.pos.y > SCREEN_HEIGHT - self.height / 2 then         
+        self.toDelete = true
+    end
+end
+
+function Bullet:checkRange()
+    local distance = math.dist(self.startPos.x, self.startPos.y, self.pos.x, self.pos.y)
+    if distance > self.fireRange then
         self.toDelete = true
     end
 end

@@ -20,7 +20,7 @@ function Hero:new(pX, pY)
     
     h.fireSpd = 60
     h.fireRate = 2
-    h.fireRange = 20
+    h.fireRange = 200
 
     h.oldButtonDown = false
 

@@ -127,7 +127,7 @@ function Hero:update(dt)
             self.isInvincible = false
         end
     end
-
+    self:checkBorderCollision()
     self:animate(dt)
 end
 
@@ -195,6 +195,20 @@ function Hero:takeDamage(pDamage)
     end
     if self.life <= 0 then
         self.toDelete = true
+    end
+end
+
+function Hero:checkBorderCollision()
+    if self.pos.x < -self.width/(self.scale*2) then
+        self.pos.x = -self.width/(self.scale*2)
+    elseif self.pos.x > SCREEN_WIDTH - self.width/(self.scale*2) - self.width/2 then
+        self.pos.x = SCREEN_WIDTH - self.width/(self.scale*2) - self.width/2
+    end
+
+    if self.pos.y < -self.height/(self.scale) + self.height/2 + (self.scale*2) then
+        self.pos.y = -self.width/(self.scale) + self.height/2 + (self.scale*2)
+    elseif self.pos.y > SCREEN_HEIGHT - self.height / (self.scale*2) - self.height/2 - (self.scale*2) then
+        self.pos.y = SCREEN_HEIGHT - self.height / (self.scale*2) - self.height/2 - (self.scale*2)
     end
 end
 

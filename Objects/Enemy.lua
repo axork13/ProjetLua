@@ -89,8 +89,12 @@ function Enemy:update(dt)
         self.currentState = self.state.WALK
     end
 
-    if self.currentState == self.state.RUNAWAY then        
-        self:runAwayFrom(hero)
+    if self.currentState == self.state.RUNAWAY then    
+        local detectionRadius = 200
+        local distance = math.dist(self.pos.x, self.pos.y, hero.pos.x,hero.pos.y)
+        if distance < detectionRadius then
+            self:runAwayFrom(hero)
+        end
         self.currentState = self.state.WALK
     end
 
@@ -127,18 +131,18 @@ function Enemy:animate(dt)
 end
 
 function Enemy:checkBorderCollision()
-    if self.pos.x < self.width/(self.scale*2) / (self.scale*2) then
-        self.pos.x = self.width / (self.scale*2)
+    if self.pos.x < -self.width/(self.scale*2) then
+        self.pos.x = -self.width/(self.scale*2)
         self.currentState = self.state.CHANGEDIR
-    elseif self.pos.x > SCREEN_WIDTH - self.width / (self.scale*2) then         
-        self.pos.x = SCREEN_WIDTH - self.width / (self.scale*2)
+    elseif self.pos.x > SCREEN_WIDTH - self.width/(self.scale*2) - self.width/2 then
+        self.pos.x = SCREEN_WIDTH - self.width/(self.scale*2) - self.width/2
         self.currentState = self.state.CHANGEDIR
     end
-    if self.pos.y < self.height / (self.scale) then
-        self.pos.y = self.height / (self.scale)
+    if self.pos.y < -self.height/(self.scale) + self.height/2 + (self.scale*2) then
+        self.pos.y = -self.width/(self.scale) + self.height/2 + (self.scale*2)
         self.currentState = self.state.CHANGEDIR
-    elseif self.pos.y > SCREEN_HEIGHT - self.height / (self.scale*2) then         
-        self.pos.y = SCREEN_HEIGHT - self.height / (self.scale*2)
+    elseif self.pos.y > SCREEN_HEIGHT - self.height / (self.scale*2) - self.height/2 - (self.scale*2) then
+        self.pos.y = SCREEN_HEIGHT - self.height / (self.scale*2) - self.height/2 - (self.scale*2)
         self.currentState = self.state.CHANGEDIR
     end
 end
